@@ -5,6 +5,7 @@ const path = require('path');
 
 const db = require('./DAO/conn');
 const User = require('./models/SystemUser');
+// const routes = require('./routes/userRoutes');
 const organization = require('./models/organization');
 
 
@@ -21,7 +22,8 @@ app.post('/otp',userRoute);
 app.get('/verify',userRoute);
 
 app.get('/create',orgRoute);
-// app.post('/orgCreated',orgRoute);
+app.get('/createOrgUser',userRoute);
+app.post('/createOrgUser',userRoute);
 app.post('/org',userRoute);
 
 

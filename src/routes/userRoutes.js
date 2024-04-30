@@ -17,9 +17,15 @@ user_router.get('/verify',userController.verifyEmail);
 
 user_router.post('/org',userController.createOrg);
 
+user_router.get('/createOrgUser',userController.loadOrgUser);
+
+user_router.post('/createOrgUser',userController.insertOrgUser);
+
 const bodyParser = require('body-parser');
 user_router.use(bodyParser.json());
 user_router.use(bodyParser.urlencoded({extended:true}));
 
 module.exports = user_router;
+
+
 
