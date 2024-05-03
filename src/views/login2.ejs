@@ -4,11 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
+    <style>
+        body{
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-    <form>
+    <h1>Login Here</h1>
+    <form action="/dashboard" method="post">
         <input type="email" name="email" placeholder="Enter your email">
         <button type="submit">Login</button>
+        <% if(!isVerified){ %>
+            <p>
+            <b>Sorry! you are not verified</b>
+            </p>
+        <% } %>
     </form>
 </body>
 </html>

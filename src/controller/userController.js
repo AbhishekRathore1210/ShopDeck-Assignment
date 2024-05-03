@@ -150,6 +150,43 @@ const verifyOTP = async(req,res)=>{
     }
 }
 
+const loadLogin2 = async(req,res)=>{
+    try{
+        return res.render('login2',{
+            isVerified:true
+        });
+    }catch(error){
+        console.log(error.message);
+    }
+}
+
+const loginUser = async(req,res)=>{
+    try{
+        const email = req.body.email;
+        // console.log(email);
+        const user_1 = await User.findOne({
+            $and:[{email:email},{is_verified:1}]
+        });
+        // console.log(user_1);
+        if(user_1){
+            Organization.find({}).then((cnt)=>{
+                return res.render('dashboard',{
+                    title:"DashBoard",
+                    org_list:cnt
+                })}).catch((err)=>{
+                    console.log(err);
+                })
+        }
+        else{
+            return res.render('login2',{
+                isVerified:false
+            })
+        }
+    }catch(error){
+        console.log(error.message);
+    }
+}
+
 
 module.exports = {
     loadRegister,
@@ -157,4 +194,6 @@ module.exports = {
     homePage,
     verifyEmail,
     verifyOTP,
+    loadLogin2,
+    loginUser
 }

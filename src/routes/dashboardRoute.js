@@ -8,6 +8,7 @@ dash_router.set('views','./views');
 const dashController = require('../controller/dashController');
 
 dash_router.get('/',dashController.loadDashboard);
+dash_router.post('/',dashController.loadDashboard);
 dash_router.get('/create',dashController.loadOrg);
 dash_router.post('/createOrg',dashController.createOrg);
 dash_router.get('/createOrgUser',dashController.loadOrgUser);

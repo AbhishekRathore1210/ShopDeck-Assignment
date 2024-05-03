@@ -25,6 +25,8 @@ app.get('/verify',userRoute);
 
 app.get('/createOrgUser',userRoute);
 app.post('/createOrgUser',userRoute);
+app.get('/login2',userRoute);
+app.post('/dashboard',userRoute);
 
 
 //dashboard routes

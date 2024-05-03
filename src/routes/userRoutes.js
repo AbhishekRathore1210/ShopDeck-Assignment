@@ -13,7 +13,11 @@ user_router.get('/register',userController.loadRegister);
 
 user_router.post('/login',userController.insertUser);
 
+user_router.get('/login2',userController.loadLogin2);
+
 user_router.get('/verify',userController.verifyEmail);
+
+user_router.post('/dashboard',userController.loginUser);
 
 
 
