@@ -8,12 +8,19 @@
 </head>
 <body>
     <h1>HERE THE REGISTRATION GOES</h1>   
-
-    <form action="/otp" method="post">
+    <form action="/login" method="post">
         <input type="text" name="name" placeholder="Enter your name">
         <input type="email" name="myEmail" placeholder="Enter your Email">
         <button type="submit">Register</button>
+        <% if(isRegister){ %>
+            <p>User is Already Present</p>
+        <% } %>
     </form>
+    <!-- <script>
+        function pratik(){
+            windows.location.href="/login"
+        }
+    </script> -->
     <script src="/js/register.js"></script>
 </body>
 </html>

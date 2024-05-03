@@ -13,20 +13,15 @@ const generateOTP = ()=>{
 }
 const loadRegister = async(req,res)=>{
     try{
-        return res.render('register');
+        return res.render('register',{
+            isRegister:false
+        });
 
     }catch(error){
         console.log(error.message);
     }
 } 
 
-const loadOrgUser = async(req,res)=>{
-    try {
-        return res.render('createOrgUser');
-    } catch (error) {
-        console.log(error.message);
-    }
-}
 
 const homePage = async(req,res)=>{
     try {
@@ -45,7 +40,7 @@ const sendEmailOTP = async(email,id)=>{
             requireTLS:true,
             auth:{
                 user:'abhishek19229785@gmail.com',
-                pass:''
+                pass:'inft pvav gugm lqyz'
             }
         });
         // console.log(email);
@@ -75,6 +70,15 @@ const sendEmailOTP = async(email,id)=>{
 const insertUser = async(req,res)=>{
 
     try{
+        const user1 =  await User.findOne({email:req.body.myEmail});
+        console.log(user1);
+        if(user1){
+            console.log("user is already present");
+            res.render('register',{
+                isRegister:true
+            });
+        }
+        else{
         const user = new User({
             name:req.body.name,
             email:req.body.myEmail
@@ -85,73 +89,16 @@ const insertUser = async(req,res)=>{
             const myOtp = await sendEmailOTP(req.body.myEmail,userData._id);
             const updatedOtp = await User.updateOne({_id:userData._id},{$set:{otp:myOtp}});
             // console.log(updateOtp);
-            return res.render('otp');
+            return res.render('login');
         }
         return res.render('register');
     }
+}
     catch(error){
         console.log(error.message);
     }
 }
 
-const insertOrgUser = async(req,res)=>{
-    console.log(req.body);
-    let {firstname,lastname,email,dob,doj,organize} = req.body;
-
-    if(
-        [organize, firstname, email, dob, doj].some((el)=>{
-            return el === "" || typeof(el) === 'undefined'
-        })
-    ){
-        return res.status(201).json({status: "false", msg: "Fill the details"})
-    }
-
-    let orgData = await Organization.findOne({name: organize})
-    if(!orgData){
-        return res.status(201).json({status: "false", msg: "Organization not exists"})
-    }
-    else if(orgData.userEmail.includes(email)){
-        return res.status(201).json({status: "true", msg: "Email ID already exists"})
-    }
-    else{
-        const ack = await Organization.updateOne(
-            {name: organize},
-            {
-                $push:{
-                    userEmail: email,
-                }
-            }
-        )
-    }
-    let userData = await OrganizationUser.findOne({email: email})
-    if(!userData){
-        console.log("inside if");
-        const new_user = await OrganizationUser.create({
-            first_name: firstname,
-            last_name: lastname,
-            email: email,
-            dob: dob,
-            doj: doj,
-            org:organize,
-            organization_list: [organize]
-        })
-        new_user.save()
-        return res.status(201).json({status: "true", msg: "Organization User created sucessfully"})
-    }
-    else{
-        console.log("inside else");
-        await OrganizationUser.updateOne(
-            {email : email},
-            {
-                $push: {
-                    organization_list: organize
-                }
-            }
-        )
-
-        return res.status(201).json({status: "true", msg: "Organization User added sucessfully"})
-    }
-}
 
 const verifyEmail = async(req,res)=>{
     try {
@@ -164,30 +111,50 @@ const verifyEmail = async(req,res)=>{
     }
 }
 
-const createOrg = async(req,res)=>{
-    try{
-        // console.log(req.body.myName);
-        const org = new Organization({
-            name:req.body.myName
-        })
-
-        const orgData = await org.save();
-        if(orgData){
-            return res.render('org');
+const check = async(otp,email)=>{
+    const user = await User.findOne({email:email});
+    console.log(user);
+    if(user){
+        if(user.otp === otp){
+            return true;
         }
-        res.render('create');
+        return false;
+    }
+    return false;
+}
+const verifyOTP = async(req,res)=>{
+    try {
+        myotp = req.body.newOtp;
+        email = req.body.myEmail;
+        console.log("myOtp " , myotp);
 
-    }catch(error){
+        if(check(myotp,email)){
+
+        const updateInfo = await User.updateOne({email:email},{$set:{is_verified : 1}});
+        // console.log(updateInfo);
+        
+        Organization.find({}).then((cnt)=>{
+            return res.render('dashboard',{
+                title:"DashBoard",
+                org_list:cnt
+            })}).catch((err)=>{
+                console.log(err);
+            })
+    }
+    else{
+        res.render('home');
+    }
+}
+     catch (error) {
         console.log(error.message);
     }
 }
+
 
 module.exports = {
     loadRegister,
     insertUser,
     homePage,
     verifyEmail,
-    createOrg,
-    loadOrgUser,
-    insertOrgUser
+    verifyOTP,
 }

@@ -16,16 +16,19 @@ app.use(express.static('assets'));
 
 const userRoute = require('./routes/userRoutes');
 const orgRoute = require('./routes/orgRoutes');
+const dashboardRoute = require('./routes/dashboardRoute');
 app.get('/register',userRoute);
 app.get('/',userRoute);
-app.post('/otp',userRoute);
+app.post('/login',userRoute);
 app.get('/verify',userRoute);
 
-app.get('/create',orgRoute);
+
 app.get('/createOrgUser',userRoute);
 app.post('/createOrgUser',userRoute);
-app.post('/org',userRoute);
 
+
+//dashboard routes
+app.use('/dashboard',dashboardRoute);
 
 
 app.listen(port,function(err){

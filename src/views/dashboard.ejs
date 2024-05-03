@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%=title %>
+    </title>
+    <style>
+        /* body{
+            background-color: rgb(160, 160, 171);
+        } */
+        .center{
+            text-align: center;
+        }
+        ul li{
+            list-style: none;
+        }
+        </style>
+        <h1 class="center">System Admin</h1>
+</head>
+<body>
+    <div class="center">
+    <a href="/dashboard/create">Click here to Create Organization</a><br><br>
+    <a href="/dashboard/createOrgUser">Click here to Create Organization User</a><br><br>
+    </div>
+    <ol>
+        <h3>All Organizations</h3><br>
+        <% for(i of org_list){%>  
+            <li>
+                <%=i.name%>
+            </li>
+            <% } %>
+    </ol>
+</body>
+</html>

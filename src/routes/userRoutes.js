@@ -11,15 +11,12 @@ user_router.get('/',userController.homePage);
 
 user_router.get('/register',userController.loadRegister);
 
-user_router.post('/otp',userController.insertUser);
+user_router.post('/login',userController.insertUser);
 
 user_router.get('/verify',userController.verifyEmail);
 
-user_router.post('/org',userController.createOrg);
 
-user_router.get('/createOrgUser',userController.loadOrgUser);
 
-user_router.post('/createOrgUser',userController.insertOrgUser);
 
 const bodyParser = require('body-parser');
 user_router.use(bodyParser.json());
