@@ -40,7 +40,7 @@ const sendEmailOTP = async(email,id)=>{
             requireTLS:true,
             auth:{
                 user:'abhishek19229785@gmail.com',
-                pass:'inft pvav gugm lqyz'
+                pass:''
             }
         });
         // console.log(email);
