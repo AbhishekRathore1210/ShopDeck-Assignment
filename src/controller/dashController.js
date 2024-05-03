@@ -25,17 +25,10 @@ const verifyOTP = async(req,res)=>{
 
         const flag = await check(myotp,email);
         if(flag){
-            console.log("Inside if");
         const updateInfo = await User.updateOne({email:email},{$set:{is_verified : 1}});
         // console.log(updateInfo);
         
-        Organization.find({}).then((cnt)=>{
-            return res.render('dashboard',{
-                title:"DashBoard",
-                org_list:cnt
-            })}).catch((err)=>{
-                console.log(err);
-            })
+        return res.redirect('/dashboard');
     }
     else{
         console.log("OTP is not correct");
@@ -54,13 +47,14 @@ const createOrg = async(req,res)=>{
         })
         const orgData = await org.save();
         if(orgData){
-            Organization.find({}).then((cnt)=>{
-                return res.render('dashboard',{
-                    title:"DashBoard",
-                    org_list:cnt
-                })}).catch((err)=>{
-                    console.log(err);
-                })
+            // Organization.find({}).then((cnt)=>{
+            //     return res.render('dashboard',{
+            //         title:"DashBoard",
+            //         org_list:cnt
+            //     })}).catch((err)=>{
+            //         console.log(err);
+            //     })
+            return res.redirect('/dashboard');
         }
         else{
             return res.render('create');
@@ -164,6 +158,23 @@ const insertOrgUser = async(req,res)=>{
         return res.status(201).json({status: "true", msg: "Organization User added sucessfully"})
     }
 }
+const deleteOrg = async(req,res)=>{
+    try{
+        let id = req.query.id;
+        const updateInfo = Organization.findByIdAndDelete(id).catch((err)=>console.log(err));
+        //  Organization.find({}).then((cnt)=>{
+        //     return res.render('dashboard',{
+        //         title:"DashBoard",
+        //         org_list:cnt
+        //     })}).catch((err)=>{
+        //         console.log(err);
+        //     })
+        res.redirect('back');
+
+    }catch(error){
+        console.log(error.message);
+    }
+}
 
 module.exports = {
     createOrg,
@@ -171,5 +182,6 @@ module.exports = {
     loadDashboard,
     loadOrg,
     insertOrgUser,
-    loadOrgUser
+    loadOrgUser,
+    deleteOrg
 }

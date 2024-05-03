@@ -14,7 +14,7 @@ dash_router.post('/createOrg',dashController.createOrg);
 dash_router.get('/createOrgUser',dashController.loadOrgUser);
 dash_router.post('/verifyOTP',dashController.verifyOTP);
 dash_router.post('/createOrgUser',dashController.insertOrgUser);
-
+dash_router.get('/delete-org',dashController.deleteOrg);
 
 
 module.exports = dash_router;

@@ -3,32 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%=title %>
-    </title>
     <style>
-        /* body{
-            background-color: rgb(160, 160, 171);
-        } */
+        *{
+            /* margin: 0; */
+            margin-top: 0;
+            padding-top: 0;
+        }
+        body{
+            /* background-color: rgb(61, 61, 151); */
+            padding: 0;
+            background-color: black;
+            margin: 0;
+        }
         .center{
             text-align: center;
         }
         ul li{
             list-style: none;
         }
+        .space{
+            margin: 5px;
+        }
+        #name{
+            margin-right: 100px;
+        }
+        .bg-black{
+            background-color: black;
+        }
+        a{
+           color:white;
+        }
+        h1{
+            background-color: black;
+            color: white;
+        }
+        #name{
+            color:white;
+        }
         </style>
-        <h1 class="center">System Admin</h1>
 </head>
 <body>
-    <div class="center">
+    <div class="center bg-black">
+        <h1>System Admin</h1><br>
     <a href="/dashboard/create">Click here to Create Organization</a><br><br>
     <a href="/dashboard/createOrgUser">Click here to Create Organization User</a><br><br>
     </div>
     <ol>
-        <h3>All Organizations</h3><br>
+        <h3 style="color:white">All Organizations</h3><br>
         <% for(i of org_list){%>  
             <li>
-                <%=i.name%>
+                <div class="space">
+                <span id="name"><%=i.name%></span>
+                <button class="bg-black"><span><a href="/dashboard/delete-org/?id=<%=i._id%>">Delete</a></span></button>
+            </div>
             </li>
             <% } %>
     </ol>
