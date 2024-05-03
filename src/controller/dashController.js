@@ -47,13 +47,6 @@ const createOrg = async(req,res)=>{
         })
         const orgData = await org.save();
         if(orgData){
-            // Organization.find({}).then((cnt)=>{
-            //     return res.render('dashboard',{
-            //         title:"DashBoard",
-            //         org_list:cnt
-            //     })}).catch((err)=>{
-            //         console.log(err);
-            //     })
             return res.redirect('/dashboard');
         }
         else{
