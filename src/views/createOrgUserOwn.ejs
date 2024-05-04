@@ -9,6 +9,9 @@
             text-align: center;
             background-color: black;
         }
+        p{
+            color:white;
+        }
         h1{
             color:white;
         }
@@ -25,7 +28,7 @@
         <input type="text" name="organizationName" placeholder="Org. Name"><br><br>
         <button type="submit">Create</button>
         <% if(isRegisterUser){ %>
-            <p>User is Already Registered! in this organizationName</p>
+            <p>User is Already Registered! in this organization</p>
         <%} %>
 
         <% if(isLogin){ %>
@@ -34,6 +37,10 @@
 
         <% if(isOrganization){ %>
             <p>Organization Does not Exists!</p>
+        <%} %>
+
+        <% if(isAnother){ %>
+            <p>User is added to Another Organization!</p>
         <%} %>
     </form>
 </body>

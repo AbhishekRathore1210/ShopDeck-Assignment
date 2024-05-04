@@ -21,21 +21,36 @@ const created = async (req, res) => {
             return res.render('createOrgUserOwn',{
                 isRegisterUser:false,
                 isLogin:false,
-                isOrganization:true
+                isOrganization:true,
+                isAnother:false
             })
         }
         else {
             const userExist = await OrganizationUser.findOne({ email:user.email });
-            // console.log(userExist);
+            console.log(userExist);
             if (userExist) {
                 if (userExist.organization_list.includes(user.organizationName)) {
                     console.log("user is already a part of this organization");
                     return res.render('createOrgUserOwn', {
                         isRegisterUser: true,
                         isLogin:false,
-                        isOrganization:false
+                        isOrganization:false,
+                        isAnother:false
                     })
                 }
+                else{
+                    // const user1 = await OrganizationUser.findOne({email:req.body.email});
+                    userExist.organization_list.push(req.body.organizationName);
+
+                    await userExist.save();
+                    return res.render('createOrgUserOwn',{
+                        isRegisterUser: true,
+                        isLogin:false,
+                        isOrganization:false,
+                        isAnother:false
+                    })
+                }
+            }
                 else {
                     // lets create a User
                     const new_user = await OrganizationUser.create({
@@ -47,17 +62,21 @@ const created = async (req, res) => {
                         org:user.organizationName,
                         organization_list: [user.organizationName]
                     })
-                    new_user.save();
+                    
+                    await new_user.save();
+                    orgExist.users.push({userId:new_user._id,name:`${new_user.first_name} ${new_user.last_name}`,email:new_user.email,is_verified:0});
+
+                    await orgExist.save();
                     console.log("User is Registered Kindly Login");
                     return res.render('createOrgUserOwn',{
                         isRegisterUser:false,
                         isLogin:true,
-                        isOrganization:false
+                        isOrganization:false,
+                        isAnother:false
                     })
                 }
             }
-        }
-    } catch (error) {
+        }catch (error) {
         console.log(error.messsage);
     }
 }
@@ -85,7 +104,8 @@ const createUser = async (req, res) => {
         return res.render('createOrgUserOwn', {
             isRegisterUser: false,
             isLogin:false,
-            isOrganization:false
+            isOrganization:false,
+            isAnother:false
         });
     } catch (error) {
         console.log(error.message);
