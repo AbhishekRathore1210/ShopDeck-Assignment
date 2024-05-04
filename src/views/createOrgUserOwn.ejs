@@ -3,25 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Org User</title>
+    <title>Create User</title>
     <style>
         body{
             text-align: center;
             background-color: black;
         }
+        h1{
+            color:white;
+        }
     </style>
 </head>
 <body>
-    <h1 style="color:white">Create Organization User</h1>
-    <form action="/dashboard/createOrgUser" method="post">
+    <h1>Register</h1>
+    <form action="/org/createOrgUserOwn" method="POST">
         <input type="text" name="firstname" placeholder="First Name"><br><br>
         <input type="text" name="lastname" placeholder="Last Name"><br><br>
         <input type="email" name="email" placeholder="Email"><br><br>
         <input type="text" name="dob" placeholder="DOB"><br><br>
         <input type="text" name="doj" placeholder="Date of Joining"><br><br>
-        <input type="text" name="organize" placeholder="Org. Name"><br><br>
+        <input type="text" name="organizationName" placeholder="Org. Name"><br><br>
         <button type="submit">Create</button>
-        <button><a href="/dashboard">Dashboard</a></button>
+        <% if(isRegisterUser){ %>
+            <p>User is Already Registered! in this organizationName</p>
+        <%} %>
+
+        <% if(isLogin){ %>
+            <p>User is Registered Successfully Kindly Login</p>
+        <%} %>
+
+        <% if(isOrganization){ %>
+            <p>Organization Does not Exists!</p>
+        <%} %>
     </form>
 </body>
 </html>

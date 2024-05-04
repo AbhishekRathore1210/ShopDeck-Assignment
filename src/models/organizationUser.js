@@ -31,7 +31,6 @@ const orgUserSchema = new mongoose.Schema({
     },
     organization_list:{
         type:Array,
-        default:[],
         required:true
     }
 })

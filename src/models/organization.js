@@ -6,10 +6,25 @@ const orgSchema = new mongoose.Schema({
         required:true,
         unique:true
     },
-    userEmail:{
-        type:Array,
-        required:true
-    }
+    users:[{
+        userId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User',
+            required:true
+        },
+        name:{
+            type:String,
+            required:true
+        },
+        email:{
+            type:String,
+            required:true,
+        },
+        is_verified:{
+            type:Number,
+            default:0
+        }
+    }]
 })
 
 const Organization = mongoose.model('Organization',orgSchema);

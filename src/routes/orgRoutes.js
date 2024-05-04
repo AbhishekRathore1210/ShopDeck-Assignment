@@ -9,6 +9,9 @@ const orgController = require('../controller/orgController');
 
 org_router.get('/create',orgController.loadOrganization);
 org_router.post('/orgCreated',orgController.createOrganization);
+
+org_router.get('/createOrgUserOwn',orgController.createUser);
+org_router.post('/createOrgUserOwn',orgController.created)
 // org_router.get('/orgCreated',orgController.created);
 
 const bodyParser = require('body-parser');

@@ -89,79 +89,64 @@ const loadOrgUser = async(req,res)=>{
 }
 
 const insertOrgUser = async(req,res)=>{
-    console.log(req.body);
-    let {firstname,lastname,email,dob,doj,organize} = req.body;
-
-    if(
-        [organize, firstname, email, dob, doj].some((el)=>{
-            return el === "" || typeof(el) === 'undefined'
-        })
-    ){
-        return res.status(201).json({status: "false", msg: "Fill the details"})
-    }
-
-    let orgData = await Organization.findOne({name: organize})
-    if(!orgData){
-        return res.status(201).json({status: "false", msg: "Organization not exists"})
-    }
-    else if(orgData.userEmail.includes(email)){
-        return res.status(201).json({status: "true", msg: "Email ID already exists"})
-    }
-    else{
-        const ack = await Organization.updateOne(
-            {name: organize},
-            {
-                $push:{
-                    userEmail: email,
-                }
+    // console.log(req.body);
+    const {firstname,lastname,email,dob,doj,organize} = req.body;
+    // console.log(req.body);
+    try{
+        const existingUser = await OrganizationUser.findOne({email:email});
+        if(existingUser){
+            if(existingUser.organization_list.includes(organize)){
+                return res.status(404).send({ message: "User already exists in the organization." });
             }
-        )
+            else{
+                const existingDepartment = await Organization.findOne({name:organize });
+                if(!existingDepartment){
+                    return res.status(404).send({ message: "No such department exists." });
+                }
+                existingUser.organization_list.push(organize);
+                await existingUser.save();
+
+                existingDepartment.users.push({ userId: existingUser._id, name: `${firstname} ${lastname}`, email: email, is_verified: 0 });
+        await existingDepartment.save();
+
+        // return res.status(200).send({  message: "User added to another organization." });
+        console.log("User added to another organization");
+        return res.redirect('back');
+            }
+        }
+
+        let department = await Organization.findOne({name:organize });
+
+    if (!department) {
+      return res.status(404).send({ message: "No such department exists." });
     }
-    let userData = await OrganizationUser.findOne({email: email})
-    if(!userData){
-        const new_user = await OrganizationUser.create({
-            first_name: firstname,
-            last_name: lastname,
-            email: email,
-            dob: dob,
-            doj: doj,
-            org:organize,
-            organization_list: [organize]
-        })
-        new_user.save()
-        Organization.find({}).then((cnt)=>{
-            return res.render('dashboard',{
-                title:"DashBoard",
-                org_list:cnt
-            })}).catch((err)=>{
-                console.log(err);
+
+    const new_user = await OrganizationUser.create({
+                first_name: firstname,
+                last_name: lastname,
+                email: email,
+                dob: dob,
+                doj: doj,
+                org:organize,
+                organization_list: [organize]
             })
-    }
-    else{
-        console.log("inside else");
-        await OrganizationUser.updateOne(
-            {email : email},
-            {
-                $push: {
-                    organization_list: organize
-                }
-            }
-        )
+            new_user.save()
+            Organization.find({}).then((cnt)=>{
+                return res.render('dashboard',{
+                    title:"DashBoard",
+                    org_list:cnt
+                })}).catch((err)=>{
+                    console.log(err);
+                })
 
-        return res.status(201).json({status: "true", msg: "Organization User added sucessfully"})
+            }catch(error){
+            console.log(error.message);
+        }
     }
-}
 const deleteOrg = async(req,res)=>{
     try{
         let id = req.query.id;
         const updateInfo = Organization.findByIdAndDelete(id).catch((err)=>console.log(err));
-        //  Organization.find({}).then((cnt)=>{
-        //     return res.render('dashboard',{
-        //         title:"DashBoard",
-        //         org_list:cnt
-        //     })}).catch((err)=>{
-        //         console.log(err);
-        //     })
         res.redirect('back');
 
     }catch(error){

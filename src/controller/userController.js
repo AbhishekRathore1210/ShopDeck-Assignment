@@ -73,7 +73,7 @@ const insertUser = async(req,res)=>{
         const user1 =  await User.findOne({email:req.body.myEmail});
         console.log(user1);
         if(user1){
-            console.log("user is already present");
+            console.log("user is already present ");
             res.render('register',{
                 isRegister:true
             });

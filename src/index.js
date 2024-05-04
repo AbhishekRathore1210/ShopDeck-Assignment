@@ -32,6 +32,9 @@ app.post('/dashboard',userRoute);
 //dashboard routes
 app.use('/dashboard',dashboardRoute);
 
+//org routes
+app.use('/org',orgRoute);
+
 
 app.listen(port,function(err){
     if(err){
